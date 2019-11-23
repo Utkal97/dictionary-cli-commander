@@ -1,48 +1,73 @@
 const {getDefinition, getRelatedWords, getExamples, getRandomWord} = require('./getRequests.js');
 
-function findDefinition(word)
+async function findDefinition(word)
 {
-    console.log(`definition of ${word} is :`);
-    let result = getDefinition(word);
-    console.log("Final result :" + result);
-    return word;
+    console.log(`definitions for the ${word} are :-`);
+    let result = await getDefinition(word);
+    let jsonData = JSON.parse(result);
+    return jsonData;
 }
 
-function findSynonym(word)
+async function findSynonym(word)
 {
     console.log(`synonym of ${word} is :`);
-    getRelatedWords(word);
-    return word;
+    let result = await getRelatedWords(word);
+    let jsonData = JSON.parse(result);
+
+    if(jsonData[0].relationshipType === 'synonym')
+        return jsonData[0].words;
+    else if(jsonData.length>1 && jsonData[1].relationshipType === 'synonym')
+        return jsonData[1].words;
 }
 
-function findAntonym(word)
+async function findAntonym(word)
 {
-    console.log(`antonym of ${word} is :`);
-    //if no antonym:
-        //print there are no synonyms
-        //call findSynonym
-    getRelatedWords(word);
-    return word;
+    let result = await getRelatedWords(word);
+    let jsonData = JSON.parse(result);
+
+    if(jsonData[0].relationshipType === 'antonym')
+        return {'antonyms':jsonData[0].words};
+    else if(jsonData.length>1 && jsonData[1].relationshipType === 'antonym')
+        return {'antonyms':jsonData[1].words};
+    else
+        return {'synonyms':jsonData[0].words, 'antonyms':[]};
+    
 }
 
-function findExamples(word)
+async function findExamples(word)
 {
     console.log(`examples for ${word} is :`);
-    getExamples(word);
-    return word;
+    let result = await getExamples(word);
+    let jsonData = JSON.parse(result);
+    return jsonData;
 }
 
-function findAll(word)
+async function findAll(word)
 {
-    console.log(`result for ${word} is :`);
-    return word;
+    let allData = {};
+    let definitions = await findDefinition(word);
+    allData['defn'] = definitions;
+
+    let examples = await findExamples(word);
+    allData['ex'] = examples;
+
+    let antonyms = await findAntonym(word);
+    allData['ant'] = antonyms;
+
+    let synonyms = await findSynonym(word);
+    allData['syn'] = synonyms;
+
+    console.log(allData);
+    return allData;
 }
 
-function giveRandomWord()
+async function giveRandomWord()
 {
     console.log("Word of the day :");
-    getRandomWord();
-    return "";
+    let result = await getRandomWord();
+    let jsonData = JSON.parse(result);
+    console.log(jsonData);
+    return jsonData;
 }
 
 function wordGame()
