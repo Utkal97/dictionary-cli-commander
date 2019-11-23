@@ -5,7 +5,7 @@ const {findDefinition, findSynonym, findAntonym,
 findAll, findExamples, wordGame, giveRandomWord} = require('./functions.js')
 
 program
-    .version('0.0.2')
+    .version('0.0.3')
     .description('A dictionary CLI Tool');
 
 //command : dict defn <word>
@@ -15,7 +15,7 @@ program
     .description('give the definition of the asked word.')
     .action(async (word)=>{
         word = word.toLowerCase();
-        let defn = await findDefinition(word);
+        let defn = await findDefinition(word);              //await until definitions are obtained
         console.log(`Definitions for the ${word} are :-`);
         for(let i=0;i<defn.length;i++)
         {
@@ -30,7 +30,7 @@ program
     .description('give the synonym of the asked word.')
     .action(async (word)=>{
         word = word.toLowerCase();
-        let syn = await findSynonym(word);
+        let syn = await findSynonym(word);              //await until synonyms are obtained
         console.log(`Synonyms for the ${word} are :-`);
         for(let i=0; i<syn.length; i++)
         {
@@ -45,22 +45,22 @@ program
     .description('give the antonyms of the asked word.If they don\'t exist, give synonyms')
     .action(async (word)=>{        
         word = word.toLowerCase();
-        let ant = await findAntonym(word);
-        console.log(ant.antonyms);
-        if(ant.antonyms.length === 0)
-        {
-            console.log(`There are no antonyms for ${word}. Showing its synonyms :-`);
-            for(let i=0;i<ant.synonyms.length; i++)
-            {
-                console.log(`${i+1} : ${ant.synonyms[i]}`);
-            }
-        }
-        else
+        let ant = await findAntonym(word);          //await until antonyms are obtained
+        
+        if(antonyms.antonyms.length > 0)            //Check if there are antonyms for given word
         {
             console.log(`Antonyms for ${word} :-`);
             for(let i=0;i<ant.antonyms.length; i++)
             {
                 console.log(`${i+1} : ${ant.antonyms[i]}`);
+            }
+        }
+        else if(ant.antonyms.length === 0)         //If no antonyms for given word, show synonyms    
+        {
+            console.log(`There are no antonyms for ${word}. Showing its synonyms :-`);
+            for(let i=0;i<ant.synonyms.length; i++)
+            {
+                console.log(`${i+1} : ${ant.synonyms[i]}`);
             }
         }
     });
@@ -72,8 +72,8 @@ program
     .description('give the examples of use for the asked word.')
     .action(async (word) => {
         word = word.toLowerCase();
-        let ex = await findExamples(word);
-        ex = ex.examples;
+        let ex = await findExamples(word);              //await until we get responce for examples of word
+        ex = ex.examples;                               //response is an object of structure: {examples:{required}}
         console.log(`Example sentences for the ${word} are :-`);
         for(let i=0;i<ex.length;i++)
         {
@@ -90,8 +90,9 @@ program
     });
 
 //command : dict
-if(process.argv[2]===undefined)
+if(process.argv[2]===undefined)             //process.argv contains arguments passed through command. Check if we have only typed 'dict'
 {
+    //make a self invoking function to use async/await feature
     (async function (){
         let word = await giveRandomWord();
         console.log(`Word of the day is: ${word.word}`);
@@ -100,9 +101,9 @@ if(process.argv[2]===undefined)
 }
 
 //command : dict <word>
-else if(process.argv.length==3 && process.argv[2]!=="play")
+else if(process.argv.length==3 && process.argv[2]!=="play")   //check if we haven't chosen Play and we want 'dict <word>'
 {
-    goToWord(process.argv[2]);
+    goToWord(process.argv[2]);                  //process.argv contains arguments given in command.
 }
 
 program.parse(process.argv);
@@ -111,8 +112,8 @@ async function goToWord(word)
 {
     word = word.toLowerCase();
     let all = await findAll(word);
-    //console.log(all);
-    if(all.defn.length>0)
+
+    if(all.defn.length>0)                               //print definitions if present
     {
         console.log(`Definitions for '${word}' :- `);
         for(let i=0;i<all.defn.length;i++)
@@ -120,7 +121,8 @@ async function goToWord(word)
             console.log(`${i+1} : ${all.defn[i]},`);
         }
     }
-    if(all.syn.length>0)
+
+    if(all.syn.length>0)                                //print synonyms if present
     {
         console.log(`Synonyms for '${word}' :- `);
         for(let i=0;i<all.syn.length;i++)
@@ -128,7 +130,8 @@ async function goToWord(word)
             console.log(`${i+1} : ${all.syn[i]},`);
         }
     }
-    if(all.ant.length>0)
+
+    if(all.ant.length>0)                               //print antonyms if present
     {
         console.log(`Antonyms for '${word}' :- `);
         for(let i=0;i<all.ant.length;i++)
@@ -136,12 +139,12 @@ async function goToWord(word)
             console.log(`${i+1} : ${all.ant[i]},`);
         }
     }
-    else
+    else                                                //declare that they are absent
     {
         console.log(`There are no antonyms for '${word}'.`);
     }
 
-    if(all.ex.length>0)
+    if(all.ex.length>0)                                 //print examples if present
     {
         console.log(`Examples for '${word}' :-` );
         for(let i=0;i<all.ex.length;i++)
