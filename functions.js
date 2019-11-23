@@ -2,7 +2,6 @@ const {getDefinition, getRelatedWords, getExamples, getRandomWord} = require('./
 
 async function findDefinition(word)
 {
-    console.log(`definitions for the ${word} are :-`);
     let result = await getDefinition(word);
     let jsonData = JSON.parse(result);
     return jsonData;
@@ -10,7 +9,6 @@ async function findDefinition(word)
 
 async function findSynonym(word)
 {
-    console.log(`synonym of ${word} is :`);
     let result = await getRelatedWords(word);
     let jsonData = JSON.parse(result);
 
@@ -36,7 +34,6 @@ async function findAntonym(word)
 
 async function findExamples(word)
 {
-    console.log(`examples for ${word} is :`);
     let result = await getExamples(word);
     let jsonData = JSON.parse(result);
     return jsonData;
@@ -73,10 +70,8 @@ async function findAll(word)
 
 async function giveRandomWord()
 {
-    console.log("Word of the day :");
     let result = await getRandomWord();
     let jsonData = JSON.parse(result);
-    console.log(jsonData);
     return jsonData;
 }
 
