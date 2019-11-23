@@ -5,7 +5,7 @@ const {findDefinition, findSynonym, findAntonym,
 findAll, findExamples, wordGame, giveRandomWord} = require('./functions.js')
 
 program
-    .version('0.0.1')
+    .version('0.0.2')
     .description('A dictionary CLI Tool');
 
 //command : dict defn <word>
@@ -96,43 +96,49 @@ if(process.argv[2]===undefined)
 //command : dict <word>
 else if(process.argv.length==3 && process.argv[2]!=="play")
 {
-    let word = process.argv[2];
-    word = word.toLowerCase();
-    let all = findAll(word);
-    /*
-    if(all.defn.length>0)
-    {
-        console.log(`definitions for ${word} :- `);
-        for(let i=0;i<all.defn.length;i++)
+    (async function(){
+        let word = process.argv[2];
+        word = word.toLowerCase();
+        let all = await findAll(word);
+        //console.log(all);
+        if(all.defn.length>0)
         {
-            console.log(all.defn);
+            console.log(`Definitions for ${word} :- `);
+            for(let i=0;i<all.defn.length;i++)
+            {
+                console.log(`${i} : ${all.defn[i]}`);
+            }
         }
-    }
-    if(all.syn.length>0)
-    {
-        console.log(`synonyms for ${word} :- `);
-        for(let i=0;i<all.syn.length;i++)
+        if(all.syn.length>0)
         {
-            console.log(all.syn);
+            console.log(`Synonyms for ${word} :- `);
+            for(let i=0;i<all.syn.length;i++)
+            {
+                console.log(`${i} : ${all.syn[i]}`);
+            }
         }
-    }
-    if(all.ant.length>0)
-    {
-        console.log(`antonyms for ${word} :- `);
-        for(let i=0;i<all.ant.length;i++)
+        if(all.ant.length>0)
         {
-            console.log(all.ant);
+            console.log(`Antonyms for ${word} :- `);
+            for(let i=0;i<all.ant.length;i++)
+            {
+                console.log(`${i} : ${all.ant[i]}`);
+            }
         }
-    }
-    if(all.ex.length>0)
-    {
-        console.log(`examples for ${word} :-` );
-        for(let i=0;i<all.ex.length;i++)
+        else
         {
-            console.log(all.ex);
+            console.log(`There are no antonyms for ${word}`);
         }
-    }
-    */
+
+        if(all.ex.length>0)
+        {
+            console.log(`Examples for ${word} :-` );
+            for(let i=0;i<all.ex.length;i++)
+            {
+                console.log(`${i} : ${all.ex[i]}`);
+            }
+        }
+    })();
 }
 
 program.parse(process.argv);

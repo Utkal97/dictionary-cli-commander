@@ -45,19 +45,29 @@ async function findExamples(word)
 async function findAll(word)
 {
     let allData = {};
+
     let definitions = await findDefinition(word);
-    allData['defn'] = definitions;
+    allData['defn'] = [];
+    for(let i=0; i<definitions.length;i++)
+    {
+        allData['defn'].push(definitions[i].text);
+    }
 
     let examples = await findExamples(word);
-    allData['ex'] = examples;
+    allData['ex'] = [];
+    for(let i=0; i<examples.examples.length;i++)
+    {
+        allData['ex'].push(examples.examples[i].text);
+    }
 
     let antonyms = await findAntonym(word);
-    allData['ant'] = antonyms;
+    allData['ant'] = [];
+    if(antonyms.antonyms.length>0)
+        allData['ant'] = antonyms.antonyms;
 
     let synonyms = await findSynonym(word);
     allData['syn'] = synonyms;
 
-    console.log(allData);
     return allData;
 }
 
@@ -75,7 +85,6 @@ function wordGame()
     console.log("Lets play a game :");
     word = giveRandomWord();
 }
-
 
 module.exports = { findDefinition, findAll, findAntonym, 
                     findExamples, findSynonym, wordGame,
