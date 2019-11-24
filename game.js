@@ -62,14 +62,30 @@ function hintPrompt()
     });
 }
 
+
+function check(guess, ans, wordData)
+{
+    //Winning Condition: either guess the Right word OR guess its synonym.
+    if(guess === ans || wordData['syn'].includes(guess))
+    {
+        console.log("You've WON!!!");
+        if(guess === ans)
+            console.log("You guessed the exact word.");
+        else   
+            console.log(`You guessed a synonym of ${ans}`);
+        return true;
+    }
+    return false;
+}
+
 async function Game(wordData, ans, given)
 {  
-    console.log(ans);
+    //console.log(ans);
     
     let guess = await wordGuessPrompt();
     console.log(`Your guess : ${guess.guessWord}`);
 
-    //Winning Condition: either guess the Right word OR guess its synonym.
+    //Winning Condition: either guess the Right word OR guess its synonym. Send to check function
     if(check(guess.guessWord,ans, wordData))
     {
         console.log("First attempt win");
@@ -84,12 +100,12 @@ async function Game(wordData, ans, given)
         if(choice.nextOption === 'Try Again')               //Keep trying as many times as you want to
         {
             console.log(`Info you got so far :-`);
-            console.log(`definitions : ${given['defn']}`);
-            console.log(`synonyms : ${given['syn']}`);
-            console.log(`antonyms : ${given['ant']}`);
-            //Game(wordData, ans, given);
+            console.log(given);
             let sec_attempt = await wordGuessPrompt();
-            check(sec_attempt, ans, wordData);
+            if(check(sec_attempt.guessWord, ans, wordData))
+                console.log("second attempt win");
+            else
+                console.log(`You lost. Right answer is ${ans}`);
         }
         else if(choice.nextOption === 'Hint')
         {
@@ -101,10 +117,12 @@ async function Game(wordData, ans, given)
             {
                 console.log(`The word is jumbled as : ${jumble(ans)}`);     //jumble function defined on bottom    
                 console.log(`Info you got so far :-`);
-                console.log(`definitions : ${given['defn']}`);
-                console.log(`synonyms : ${given['syn']}`);
-                console.log(`antonyms : ${given['ant']}`);
-                Game(wordData, ans, given);                                 //again guess the word with added information
+                console.log(given);
+                let sec_attempt = await wordGuessPrompt();                  //give user a second chance to win
+                if(check(sec_attempt.guessWord, ans, wordData))
+                    console.log("second attempt win");
+                else
+                    console.log(`You lost. Right answer is ${ans}`);
             }
             
             else if(hintType === 'Display another definition')              //display another information
@@ -116,11 +134,12 @@ async function Game(wordData, ans, given)
                     console.log("Another definition is :" + anotherOne);
                     given['defn'].push(anotherOne);     
                     console.log(`Info you got so far :-`); 
-                    //console.log(given);
-                    console.log(`definitions : ${given['defn']}`);
-                    console.log(`synonyms : ${given['syn']}`);
-                    console.log(`antonyms : ${given['ant']}`);
-                    Game(wordData, ans, given);                             //guess the word with added information
+                    console.log(given);
+                    let sec_attempt = await wordGuessPrompt();              //give user a second chance to win
+                    if(check(sec_attempt.guessWord, ans, wordData))
+                        console.log("second attempt win");
+                    else
+                        console.log(`You lost. Right answer is ${ans}`);
                 }
                 else                                                        //new definition is already given
                 {
@@ -129,10 +148,13 @@ async function Game(wordData, ans, given)
                     console.log("Another definition is :" + anotherOne);
                     given['defn'].push(anotherOne);
                     console.log(`Info you got so far :-`);
-                    console.log(`definitions : ${given['defn']}`);
-                    console.log(`synonyms : ${given['syn']}`);
-                    console.log(`antonyms : ${given['ant']}`);
-                    Game(wordData, ans, given);                             //guess the word with added information
+                    console.log(given);
+                    //Game(wordData, ans, given);                             //guess the word with added information
+                    let sec_attempt = await wordGuessPrompt();                //give user a second chance to win
+                    if(check(sec_attempt.guessWord, ans, wordData))
+                        console.log("second attempt win");
+                    else
+                        console.log(`You lost. Right answer is ${ans}`);
                 }
             }
 
@@ -153,11 +175,14 @@ async function Game(wordData, ans, given)
                 else{
                     console.log(`THIS WORD DOESN'T HAVE ANTONYMS. Try another hint next time`);
                     console.log(`Info you got so far :-`);
-                    console.log(`definitions : ${given['defn']}`);
-                    console.log(`synonyms : ${given['syn']}`);
-                    console.log(`antonyms : ${given['ant']}`);
+                    console.log(given);
                 }
-                Game(wordData, ans, given);                                   // guess the word with new information
+                //Game(wordData, ans, given);                                   // guess the word with new information
+                let sec_attempt = await wordGuessPrompt();                      //give user a second chance to win
+                if(check(sec_attempt.guessWord, ans, wordData))
+                    console.log("second attempt win");
+                else
+                    console.log(`You lost. Right answer is ${ans}`);
             }
             
             else if(hintType === 'Display another synonym')
@@ -166,15 +191,18 @@ async function Game(wordData, ans, given)
                 console.log("new synonym : " + synonym);
                 given['syn'].push(synonym);
                 console.log(`Info you got so far :-`);
-                console.log(`definitions : ${given['defn']}`);
-                console.log(`synonyms : ${given['syn']}`);
-                console.log(`antonyms : ${given['ant']}`);
-                Game(wordData, ans, given);                                    // guess the word with new synonym
+                console.log(given);
+                //Game(wordData, ans, given);                                   // guess the word with new synonym
+                let sec_attempt = await wordGuessPrompt();                      //give user a second chance to win
+                if(check(sec_attempt.guessWord, ans, wordData))
+                    console.log("second attempt win");
+                else
+                    console.log(`You lost. Right answer is ${ans}`);
             }
         }
         else
         {
-            console.log(`Right answer is ${ans}`);
+            console.log(`Right answer is ${ans}.`);
             console.log(wordData);
         }
     }
@@ -190,18 +218,4 @@ function jumble(word){
     return jumbled;
 }
 
-function check(guess, ans, wordData)
-{
-    //Winning Condition: either guess the Right word OR guess its synonym.
-    if(guess === ans || wordData['syn'].includes(guess))
-    {
-        console.log("You've WON!!!");
-        if(guess === ans)
-            console.log("You guessed the exact word.");
-        else   
-            console.log(`You guessed a synonym of ${ans}`);
-        return true;
-    }
-    return false;
-}
 module.exports = {Game};
