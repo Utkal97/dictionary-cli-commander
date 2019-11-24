@@ -6,7 +6,7 @@ findAll, findExamples, giveRandomWord} = require('./functions.js');
 const {Game} = require('./game.js');
 
 program
-    .version('0.0.5')
+    .version('0.0.7')
     .description('A dictionary CLI Tool');
 
 //command : dict defn <word>
@@ -17,13 +17,15 @@ program
     .action(async (word)=>{
         word = word.toLowerCase();
         let defn = await findDefinition(word);              //await until definitions are obtained
-        console.log(`Definitions for the ${word} are :-`);
+        if(defn.length === 0)
+            console.log(`No definitions available for ${word}. There may not be this word in dictionary.`);
+        else
+            console.log(`Definitions for the ${word} are :-`);
         for(let i=0;i<defn.length;i++)
         {
             console.log(`${i+1} : ${defn[i].text}`);
         }
-        if(defn.length === 0)
-            console.log(`No definitions available for ${word}`);
+        
     });
 
 //command : dict syn <word>
@@ -34,13 +36,15 @@ program
     .action(async (word)=>{
         word = word.toLowerCase();
         let syn = await findSynonym(word);                  //await until synonyms are obtained
-        console.log(`Synonyms for the ${word} are :-`);
+        
+        if(syn.length === 0)
+            console.log(`No synonyms for ${word}. This word may not be in dictionary.`);
+        else
+            console.log(`Synonyms for the ${word} are :-`);
         for(let i=0; i<syn.length; i++)
         {
             console.log(`${i+1} : ${syn[i]}, `);
         }
-        if(syn.length === 0)
-            console.log(`No synonyms for ${word}`);
     });
 
 //command : dict ant <word>
@@ -51,23 +55,27 @@ program
     .action(async (word)=>{        
         word = word.toLowerCase();
         let ant = await findAntonym(word);                  //await until antonyms are obtained
-        
-        if(ant.antonyms.length > 0)                    //Check if there are antonyms for given word
+        if(ant.hasOwnProperty('synonyms'))
         {
-            console.log(`Antonyms for ${word} :-`);
-            for(let i=0;i<ant.antonyms.length; i++)
+            if(ant.antonyms.length > 0)                    //Check if there are antonyms for given word
             {
-                console.log(`${i+1} : ${ant.antonyms[i]}`);
+                console.log(`Antonyms for ${word} :-`);
+                for(let i=0;i<ant.antonyms.length; i++)
+                {
+                    console.log(`${i+1} : ${ant.antonyms[i]}`);
+                }
+            }
+            else if(ant.antonyms.length === 0)                  //If no antonyms for given word, show synonyms    
+            {
+                console.log(`There are no antonyms for ${word}. Showing its synonyms :-`);
+                for(let i=0;i<ant.synonyms.length; i++)
+                {
+                    console.log(`${i+1} : ${ant.synonyms[i]}`);
+                }
             }
         }
-        else if(ant.antonyms.length === 0)                  //If no antonyms for given word, show synonyms    
-        {
-            console.log(`There are no antonyms for ${word}. Showing its synonyms :-`);
-            for(let i=0;i<ant.synonyms.length; i++)
-            {
-                console.log(`${i+1} : ${ant.synonyms[i]}`);
-            }
-        }
+        else
+            console.log(`The word ${word} may not be there in dictionary.`);
     });
 
 //command : dict ex <word>
@@ -78,14 +86,24 @@ program
     .action(async (word) => {
         word = word.toLowerCase();
         let ex = await findExamples(word);              //await until we get responce for examples of word
-        ex = ex.examples;                               //response is an object of structure: {examples:{required}}
-        console.log(`Example sentences for the ${word} are :-`);
-        for(let i=0;i<ex.length;i++)
+        if(ex.length!== 0)
         {
-            console.log(`${i+1} : ${ex[i].text}`);
+            ex = ex.examples;                               //response is an object of structure: {examples:{required}}
+            
+            if(ex.length===0)
+                console.log(`No examples for ${word}. This word may not be in dictionary.`);
+            else
+                console.log(`Example sentences for the ${word} are :-`);
+
+            for(let i=0;i<ex.length;i++)
+            {
+                console.log(`${i+1} : ${ex[i].text}`);
+            }
         }
-        if(ex.length===0)
-            console.log(`No examples for ${word}`);
+        else
+        {
+            console.log(`No examples for ${word}. This word may not be in dictionary.`);
+        }
     });
 
 //command : dict play
@@ -141,7 +159,11 @@ async function goToWord(word)
 {
     word = word.toLowerCase();
     let all = await findAll(word);
-
+    if(all.length === 0)
+    {
+        console.log(`Word ${word} doesn't exist in dictionary.`);
+        return;
+    }
     if(all.defn.length>0)                               //print definitions if present
     {
         console.log(`Definitions for '${word}' :- `);

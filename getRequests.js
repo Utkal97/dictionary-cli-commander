@@ -8,27 +8,31 @@ let api_key = 'b972c7ca44dda72a5b482052b1f5e13470e01477f3fb97c85d5313b3c11262707
 //a generic get request function
 function getRequest(url)
 {
-    return new Promise((resolve, reject) => {               //make a promise and return body
+    let promise = new Promise((resolve, reject) => {               //make a promise and return body
         request(url, (error, response, body) => {
             if(error && error.errno === 'ENOTFOUND')
             {
-                console.log('No internet connectivity OR dicitionary cant be reached');
+                console.log('No internet connectivity OR dicitionary cant be reached'); 
             }
-            if(body !== '{"error":"word not found"}')
-                resolve(body);
             else
             {
-                body = '';
-                resolve(body);
+                if(body !== '{"error":"word not found"}')
+                    resolve(body);
+                else
+                {
+                    body = '';
+                    resolve(body);
+                }
             }
         });
     });
+    return promise;
 } 
 
 async function getDefinition(word)
 {
     let url =  base_url + 'word/' + word + '/definitions?api_key=' + api_key;
-    let result = await getRequest(url);                     //await until definitions are obtained
+    let result = await getRequest(url);                     //await until definitions are obtained   
     return result;
 }
 
