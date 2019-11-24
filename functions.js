@@ -44,7 +44,7 @@ async function findAntonym(word)
             return {'synonyms':jsonData[0].words, 'antonyms':[]};
     }
     else
-        return [];    
+        return [];
 }
 
 async function findExamples(word)

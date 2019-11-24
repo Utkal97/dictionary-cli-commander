@@ -6,7 +6,7 @@ findAll, findExamples, giveRandomWord} = require('./functions.js');
 const {Game} = require('./game.js');
 
 program
-    .version('0.0.4')
+    .version('0.0.5')
     .description('A dictionary CLI Tool');
 
 //command : dict defn <word>
@@ -91,7 +91,21 @@ program
 //command : dict play
 program
     .command('play')
-    .description('play a game.')
+    .description(`
+    - If the correct word is entered, show success message
+    - Any synonyms of the word(expected answer) should be also be accepted as a correct answer.
+    - If incorrect word is entered, user should be given 3 choices:
+        - (1) Try again
+            Let the user try again.
+        - (2) Hint
+            Display a hint, and let the user try again. Hints could be:
+                1. Display the word randomly jumbled (cat => atc, tac, tca)
+                2. Display another definition of the word
+                3. Display another antonym of the word
+                4. Display another synonym of the word
+        - (3) Quit
+    
+               Display the Word, Word Full Dict , and quit.`)
     .action(async ()=>{
         let word = await giveRandomWord();
         let wordData = await findAll(word.word);
