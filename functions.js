@@ -77,12 +77,6 @@ async function giveRandomWord()
     return jsonData;
 }
 
-function wordGame()
-{
-    console.log("Lets play a game :");
-    word = giveRandomWord();
-}
-
 module.exports = { findDefinition, findAll, findAntonym, 
-                    findExamples, findSynonym, wordGame,
+                    findExamples, findSynonym,
                     giveRandomWord};

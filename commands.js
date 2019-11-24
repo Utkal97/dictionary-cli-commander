@@ -2,10 +2,11 @@
 
 const program = require('commander');
 const {findDefinition, findSynonym, findAntonym,
-findAll, findExamples, wordGame, giveRandomWord} = require('./functions.js')
+findAll, findExamples, giveRandomWord} = require('./functions.js');
+const {Game} = require('./game.js');
 
 program
-    .version('0.0.3')
+    .version('0.0.4')
     .description('A dictionary CLI Tool');
 
 //command : dict defn <word>
@@ -30,7 +31,7 @@ program
     .description('give the synonym of the asked word.')
     .action(async (word)=>{
         word = word.toLowerCase();
-        let syn = await findSynonym(word);              //await until synonyms are obtained
+        let syn = await findSynonym(word);                  //await until synonyms are obtained
         console.log(`Synonyms for the ${word} are :-`);
         for(let i=0; i<syn.length; i++)
         {
@@ -45,9 +46,9 @@ program
     .description('give the antonyms of the asked word.If they don\'t exist, give synonyms')
     .action(async (word)=>{        
         word = word.toLowerCase();
-        let ant = await findAntonym(word);          //await until antonyms are obtained
+        let ant = await findAntonym(word);                  //await until antonyms are obtained
         
-        if(antonyms.antonyms.length > 0)            //Check if there are antonyms for given word
+        if(ant.antonyms.length > 0)                    //Check if there are antonyms for given word
         {
             console.log(`Antonyms for ${word} :-`);
             for(let i=0;i<ant.antonyms.length; i++)
@@ -55,7 +56,7 @@ program
                 console.log(`${i+1} : ${ant.antonyms[i]}`);
             }
         }
-        else if(ant.antonyms.length === 0)         //If no antonyms for given word, show synonyms    
+        else if(ant.antonyms.length === 0)                  //If no antonyms for given word, show synonyms    
         {
             console.log(`There are no antonyms for ${word}. Showing its synonyms :-`);
             for(let i=0;i<ant.synonyms.length; i++)
@@ -85,12 +86,16 @@ program
 program
     .command('play')
     .description('play a game.')
-    .action(()=>{
-        wordGame();
+    .action(async ()=>{
+        let word = await giveRandomWord();
+        let wordData = await findAll(word.word);
+        let given = wordData.defn[ Math.floor( Math.random() * wordData.defn.length ) ];
+        console.log("definition : " + given);  
+        Game(wordData, word.word, given);
     });
 
 //command : dict
-if(process.argv[2]===undefined)             //process.argv contains arguments passed through command. Check if we have only typed 'dict'
+if(process.argv[2]===undefined)                       //process.argv contains arguments passed through command. Check if we have only typed 'dict'
 {
     //make a self invoking function to use async/await feature
     (async function (){
@@ -103,7 +108,7 @@ if(process.argv[2]===undefined)             //process.argv contains arguments pa
 //command : dict <word>
 else if(process.argv.length==3 && process.argv[2]!=="play")   //check if we haven't chosen Play and we want 'dict <word>'
 {
-    goToWord(process.argv[2]);                  //process.argv contains arguments given in command.
+    goToWord(process.argv[2]);                                //process.argv contains arguments given in command.
 }
 
 program.parse(process.argv);
