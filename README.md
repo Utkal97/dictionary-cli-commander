@@ -45,6 +45,7 @@ Rules : <br />
            Displays the Word, Word Full Dict , and quit.
            
 
+Usage :-
 Clone the directory. <br />
 Open the folder in terminal. <br />
 Type the command 'npm link' so as to make the commands work on your command prompt.
