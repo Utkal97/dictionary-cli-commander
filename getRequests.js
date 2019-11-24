@@ -10,7 +10,17 @@ function getRequest(url)
 {
     return new Promise((resolve, reject) => {               //make a promise and return body
         request(url, (error, response, body) => {
-            resolve(body);
+            if(error && error.errno === 'ENOTFOUND')
+            {
+                console.log('No internet connectivity OR dicitionary cant be reached');
+            }
+            if(body !== '{"error":"word not found"}')
+                resolve(body);
+            else
+            {
+                body = '';
+                resolve(body);
+            }
         });
     });
 } 

@@ -3,42 +3,60 @@ const {getDefinition, getRelatedWords, getExamples, getRandomWord} = require('./
 async function findDefinition(word)
 {
     let result = await getDefinition(word);
-    let jsonData = JSON.parse(result);
-    return jsonData;
+    if(result) 
+    {
+        let jsonData = JSON.parse(result);
+        return jsonData;
+    }
+    else
+        return  [];
 }
 
 async function findSynonym(word)
 {
     let result = await getRelatedWords(word);
-    let jsonData = JSON.parse(result);
-
-    //responce contains both antonyms and synonyms. So, choose the synonyms part and send it
-    if(jsonData[0].relationshipType === 'synonym')
-        return jsonData[0].words;
-    else if(jsonData.length>1 && jsonData[1].relationshipType === 'synonym')
-        return jsonData[1].words;
+    if(result) 
+    {
+        let jsonData = JSON.parse(result);
+        //responce contains both antonyms and synonyms. So, choose the synonyms part and send it
+        if(jsonData[0].relationshipType === 'synonym')
+            return jsonData[0].words;
+        else if(jsonData.length>1 && jsonData[1].relationshipType === 'synonym')
+            return jsonData[1].words;        
+    }
+    else
+        return  [];
 }
 
 async function findAntonym(word)
 {
     let result = await getRelatedWords(word);
-    let jsonData = JSON.parse(result);
+    if(result)
+    {
+        let jsonData = JSON.parse(result);
 
-    //responce contains both antonyms and synonyms. So, choose the antonyms part and send it
-    if(jsonData[0].relationshipType === 'antonym')
-        return {'antonyms':jsonData[0].words};
-    else if(jsonData.length>1 && jsonData[1].relationshipType === 'antonym')
-        return {'antonyms':jsonData[1].words};
-    else                                                        //if no antonyms exist, send synonyms
-        return {'synonyms':jsonData[0].words, 'antonyms':[]};
-    
+        //responce contains both antonyms and synonyms. So, choose the antonyms part and send it
+        if(jsonData[0].relationshipType === 'antonym')
+            return {'antonyms':jsonData[0].words};
+        else if(jsonData.length>1 && jsonData[1].relationshipType === 'antonym')
+            return {'antonyms':jsonData[1].words};
+        else                                                        //if no antonyms exist, send synonyms
+            return {'synonyms':jsonData[0].words, 'antonyms':[]};
+    }
+    else
+        return [];    
 }
 
 async function findExamples(word)
 {
     let result = await getExamples(word);
-    let jsonData = JSON.parse(result);
-    return jsonData;
+    if(result)
+    {
+        let jsonData = JSON.parse(result);
+        return jsonData;
+    }
+    else
+        return [];
 }
 
 async function findAll(word)

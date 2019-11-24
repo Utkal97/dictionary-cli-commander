@@ -22,6 +22,8 @@ program
         {
             console.log(`${i+1} : ${defn[i].text}`);
         }
+        if(defn.length === 0)
+            console.log(`No definitions available for ${word}`);
     });
 
 //command : dict syn <word>
@@ -37,6 +39,8 @@ program
         {
             console.log(`${i+1} : ${syn[i]}, `);
         }
+        if(syn.length === 0)
+            console.log(`No synonyms for ${word}`);
     });
 
 //command : dict ant <word>
@@ -80,6 +84,8 @@ program
         {
             console.log(`${i+1} : ${ex[i].text}`);
         }
+        if(ex.length===0)
+            console.log(`No examples for ${word}`);
     });
 
 //command : dict play
@@ -129,6 +135,11 @@ async function goToWord(word)
         {
             console.log(`${i+1} : ${all.defn[i]},`);
         }
+    }
+    else
+    {
+        console.log(`The word '${word}' doesn't exist in dictionary`);
+        return;
     }
 
     if(all.syn.length>0)                                //print synonyms if present
