@@ -89,8 +89,12 @@ program
     .action(async ()=>{
         let word = await giveRandomWord();
         let wordData = await findAll(word.word);
-        let given = wordData.defn[ Math.floor( Math.random() * wordData.defn.length ) ];
-        console.log("definition : " + given);  
+        let given = {};
+        given['defn'] = [];
+        given['ant'] = [];
+        given['syn'] = [];
+        given['defn'].push(wordData.defn[0]);
+        console.log("given : " + given['defn'][0]);  
         Game(wordData, word.word, given);
     });
 
