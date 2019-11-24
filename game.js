@@ -64,19 +64,15 @@ function hintPrompt()
 
 async function Game(wordData, ans, given)
 {  
-    //console.log(ans);
+    console.log(ans);
     
     let guess = await wordGuessPrompt();
     console.log(`Your guess : ${guess.guessWord}`);
 
     //Winning Condition: either guess the Right word OR guess its synonym.
-    if(guess.guessWord === ans || wordData['syn'].includes(guess.guessWord))
+    if(check(guess.guessWord,ans, wordData))
     {
-        console.log("You've WON!!!");
-        if(guess.guessWord === ans)
-            console.log("You guessed the exact word.");
-        else   
-            console.log(`You guessed a synonym of ${ans}`);
+        console.log("First attempt win");
     }
     //Wrong guess -
     else
@@ -91,7 +87,9 @@ async function Game(wordData, ans, given)
             console.log(`definitions : ${given['defn']}`);
             console.log(`synonyms : ${given['syn']}`);
             console.log(`antonyms : ${given['ant']}`);
-            Game(wordData, ans, given);
+            //Game(wordData, ans, given);
+            let sec_attempt = await wordGuessPrompt();
+            check(sec_attempt, ans, wordData);
         }
         else if(choice.nextOption === 'Hint')
         {
@@ -190,5 +188,20 @@ function jumble(word){
       jumbled +=  word.splice(word.length * Math.random() << 0, 1);
     }
     return jumbled;
+}
+
+function check(guess, ans, wordData)
+{
+    //Winning Condition: either guess the Right word OR guess its synonym.
+    if(guess === ans || wordData['syn'].includes(guess))
+    {
+        console.log("You've WON!!!");
+        if(guess === ans)
+            console.log("You guessed the exact word.");
+        else   
+            console.log(`You guessed a synonym of ${ans}`);
+        return true;
+    }
+    return false;
 }
 module.exports = {Game};
