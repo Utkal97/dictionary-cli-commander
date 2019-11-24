@@ -3,8 +3,7 @@ const {getDefinition, getRelatedWords, getExamples, getRandomWord} = require('./
 async function findDefinition(word)
 {
     let result = await getDefinition(word);
-    if(result) 
-    {
+    if(result) {
         let jsonData = JSON.parse(result);
         return jsonData;
     }
@@ -15,8 +14,7 @@ async function findDefinition(word)
 async function findSynonym(word)
 {
     let result = await getRelatedWords(word);
-    if(result) 
-    {
+    if(result) {
         let jsonData = JSON.parse(result);
         //responce contains both antonyms and synonyms. So, choose the synonyms part and send it
         if(jsonData[0].relationshipType === 'synonym')
@@ -31,8 +29,7 @@ async function findSynonym(word)
 async function findAntonym(word)
 {
     let result = await getRelatedWords(word);
-    if(result)
-    {
+    if(result) {
         let jsonData = JSON.parse(result);
 
         //responce contains both antonyms and synonyms. So, choose the antonyms part and send it
@@ -50,8 +47,7 @@ async function findAntonym(word)
 async function findExamples(word)
 {
     let result = await getExamples(word);
-    if(result)
-    {
+    if(result) {
         let jsonData = JSON.parse(result);
         return jsonData;
     }
@@ -64,6 +60,10 @@ async function findAll(word)
     let allData = {};                                           //create an object for word
 
     let definitions = await findDefinition(word);
+    if(definitions.length === 0)
+        return [];
+
+
     allData['defn'] = [];                                       //put its definitions in 'defn'
     for(let i=0; i<definitions.length;i++)
     {
