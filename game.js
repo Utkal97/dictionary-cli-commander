@@ -95,7 +95,7 @@ async function Game(wordData, ans, given)
         }
         else if(choice.nextOption === 'Hint')
         {
-            let hintType = await hintPrompt();              //Ask for a hint
+            let hintType = await hintPrompt();                              //Ask for a hint
             hintType = hintType.typeOfHint;
             console.log(`You chose to ${hintType}`);
 
@@ -173,6 +173,11 @@ async function Game(wordData, ans, given)
                 console.log(`antonyms : ${given['ant']}`);
                 Game(wordData, ans, given);                                    // guess the word with new synonym
             }
+        }
+        else
+        {
+            console.log(`Right answer is ${word}`);
+            console.log(wordData);
         }
     }
 }
