@@ -43,5 +43,10 @@ Rules : <br />
         After taking hints, user guesses again.
     - (3) Quit
            Displays the Word, Word Full Dict , and quit.
+           
+
+Clone the directory. <br />
+Open the folder in terminal. <br />
+Type the command 'npm link' so as to make the commands work on your command prompt.
 
 
