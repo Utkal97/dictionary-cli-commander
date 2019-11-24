@@ -176,7 +176,7 @@ async function Game(wordData, ans, given)
         }
         else
         {
-            console.log(`Right answer is ${word}`);
+            console.log(`Right answer is ${ans}`);
             console.log(wordData);
         }
     }
