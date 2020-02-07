@@ -1,24 +1,24 @@
 {
-    "name": "dict",
-    "version": "0.0.7",
-    "description": "A simple CLI tool that provides basic features of a dictionary.",
-    "main": "index.js",
-    "preferGlobal": true,
-    "bin": "./commands.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-      "type": "git",
-      "url": "dictionary-cli-commander"
-    },
-    "author": "Utkal97",
-    "license": "ISC",
-    "dependencies": {
-      "commander": "^4.0.1",
-      "https": "^1.0.0",
-      "inquirer": "^7.0.0",
-      "request": "^2.88.0"
-    }
+  "name": "dict",
+  "version": "0.0.7",
+  "description": "A simple CLI tool that provides basic features of a dictionary.",
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": "./commands.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dictionary-cli-commander"
+  },
+  "author": "Utkal97",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "https": "^1.0.0",
+    "inquirer": "^7.0.0",
+    "request": "^2.88.0"
+  }
 }
-  
