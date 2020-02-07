@@ -3,6 +3,8 @@ A command line tool built with commander js to implement features of a dictionar
 The tool is built using nodejs with modules : 'commanderjs' and 'inquirerjs'.
 
 There are mainly 7 commands that implement dictionary functionalities:
+#### 0. GET HELP (the most important)
+command : dict help
 
 1. Get definition of a word :<br />
 command : dict defn <your_word> (OR) dict definition <your_word>.
@@ -44,11 +46,10 @@ Rules : <br />
     - (3) Quit
            Displays the Word, Word Full Dict , and quit.
            
-
-Usage :- <br />
+## Usage :-  <br />
 Step 0) You need to have Nodejs, npm installed in your system. <br />
 Step 1) Clone the directory. <br />
 Step 2) Open the folder in terminal. <br />
-Step 3) Type the command 'npm install' to download all required dependencies.
-Step 4) Type the command 'npm link' so as to make the commands work on your command prompt.
-Step 5) Use the commands and experience the small-dictionary API.
+Step 3) Type the command 'npm install' to download all required dependencies.    <br />
+Step 4) Type the command 'npm link' so as to make the commands work on your command prompt.    <br />
+Step 5) Use the commands and experience the small-dictionary API.    <br />
