@@ -45,8 +45,8 @@ Rules : <br />
            Displays the Word, Word Full Dict , and quit.
            
 
-Usage :-
-Step 0) You need to have Nodejs, npm installed in your system.
+Usage :- <br />
+Step 0) You need to have Nodejs, npm installed in your system. <br />
 Step 1) Clone the directory. <br />
 Step 2) Open the folder in terminal. <br />
 Step 3) Type the command 'npm install' to download all required dependencies.
