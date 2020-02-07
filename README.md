@@ -30,7 +30,7 @@ It shows whole information (definitions, synonyms, antonyms and examples) of the
 
 7. Play a Guess game : <br />
 command : dict play <br />
-Rules : <br />
+###### Rules : <br />
 - If the correct word is entered, show success message
 - Any synonyms of the word(expected answer) should be also be accepted as a correct answer.
 - If incorrect word is entered, user has 3 choices:
