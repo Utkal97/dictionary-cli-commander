@@ -46,8 +46,9 @@ Rules : <br />
            
 
 Usage :-
-Clone the directory. <br />
-Open the folder in terminal. <br />
-Type the command 'npm link' so as to make the commands work on your command prompt.
-
-
+Step 0) You need to have Nodejs, npm installed in your system.
+Step 1) Clone the directory. <br />
+Step 2) Open the folder in terminal. <br />
+Step 3) Type the command 'npm install' to download all required dependencies.
+Step 4) Type the command 'npm link' so as to make the commands work on your command prompt.
+Step 5) Use the commands and experience the small-dictionary API.
