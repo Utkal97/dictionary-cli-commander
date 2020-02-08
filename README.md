@@ -46,7 +46,7 @@ command : dict play <br />
     - (3) Quit
            Displays the Word, Word Full Dict , and quit.
            
-## Usage :-  <br />
+## Installation/Setting up :-  <br />
 Step 0) You need to have Nodejs, npm installed in your system. <br />
 Step 1) Clone the directory. <br />
 Step 2) Open the folder in terminal. <br />
