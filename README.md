@@ -1,4 +1,5 @@
-# dictionary-cli-commander
+# dictionary-cli-commander-42words
+#### The dictionary only contains 42 words. Some of the words contained : 'white', 'water'.
 A command line tool built with commander js to implement features of a dictionary.
 The tool is built using nodejs with modules : 'commanderjs' and 'inquirerjs'.
 
